@@ -5,6 +5,8 @@ print("Data imported...")
 
 
 import tensorflow as tf
+from pytictoc import TicToc
+t = TicToc()
 
 
 #Set our hyperparameters
@@ -18,6 +20,10 @@ print("All hyperparameters are set...")
 with tf.name_scope("input"):
     x = tf.placeholder("float",[None, 784], name="x-input") # mnist data images of 28*28=784
     y = tf.placeholder("float",[None, 10], name="y-input") # 10 class labels
+
+with tf.name_scope("input-reshape"):
+    image_input_reshape = tf.reshape(x,[-1,28,28,1])
+    tf.summary.image("input",image_input_reshape,10)
 
 
 # Create model
@@ -80,6 +86,9 @@ init = tf.global_variables_initializer()
 
 # Launch graph
 print("start training...")
+t.tic()
+
+
 with tf.Session() as sess:
     sess.run(init)
     # Set the logs writer
@@ -106,7 +115,7 @@ with tf.Session() as sess:
             print("Epoch:", '%02d' % (epoch), "cost=", "{:.9f}".format(avg_cost))
             
     print("Training Complete")    
-
+    t.toc()
 
     print ("Accuracy:", accuracy.eval(feed_dict={x: mnist.test.images, y: mnist.test.labels}))
 
