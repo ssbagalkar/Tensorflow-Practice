@@ -21,6 +21,7 @@ with tf.name_scope("input"):
     x = tf.placeholder("float",[None, 784], name="x-input") # mnist data images of 28*28=784
     y = tf.placeholder("float",[None, 10], name="y-input") # 10 class labels
 
+# This is just used to display images in tensorboard
 with tf.name_scope("input-reshape"):
     image_input_reshape = tf.reshape(x,[-1,28,28,1])
     tf.summary.image("input",image_input_reshape,10)
