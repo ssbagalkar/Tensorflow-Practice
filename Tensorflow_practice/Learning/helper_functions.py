@@ -1,16 +1,15 @@
 
 # coding: utf-8
 
-# In[8]:
+# In[7]:
 
 
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
-get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[2]:
+# In[8]:
 
 
 def create_samples(n_clusters, n_samples_per_cluster, n_features, embiggen_factor, seed):
@@ -31,7 +30,7 @@ def create_samples(n_clusters, n_samples_per_cluster, n_features, embiggen_facto
         
 
 
-# In[7]:
+# In[9]:
 
 
 def plot_clusters(all_samples, centroids, n_samples_per_cluster):
@@ -41,14 +40,23 @@ def plot_clusters(all_samples, centroids, n_samples_per_cluster):
         samples = all_samples[i*n_samples_per_cluster:(i+1)*n_samples_per_cluster]
         plt.scatter(samples[:,0],samples[:,1],c=color[i])
         # Plot centroid
-        plt.plot(centroid[0],centroid[1],markersize = 35, marker = 'x', color = 'k', mew = 10)
-        plt.plot(centroid[0], centroid[1], markersize = 30, marker = 'x', color = 'm', mew = 5)
-    plt.show()
+        plt.plot(centroid[0],centroid[1],markersize = 35, marker = 'x', color = 'k', mew = 5)
+        plt.plot(centroid[0], centroid[1], markersize = 30, marker = 'x', color = 'm', mew = 2)
+    
+
     
 
 
-# In[9]:
+# In[10]:
 
 
-
+def choose_random_centroids(samples,n_clusters):
+    n_samples = tf.shape(samples)[0]
+    random_indices = tf.random_shuffle(tf.range(0,n_samples))
+    begin = [0]
+    size = [n_clusters]
+    centroid_indices = tf.slice(random_indices,begin,size)
+    initial_centroids = tf.gather(samples,centroid_indices)
+    return initial_centroids
+    
 
