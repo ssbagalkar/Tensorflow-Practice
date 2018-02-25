@@ -72,3 +72,14 @@ def assign_to_nearest(samples,centroids):
     nearest_indices = mins
     return nearest_indices
 
+
+# In[ ]:
+
+
+def update_centroids(samples, nearest_indices, n_clusters):
+    # Updates the centroid to be the mean of all samples associated with it.
+    nearest_indices = tf.to_int32(nearest_indices)
+    partitions = tf.dynamic_partition(samples, nearest_indices, n_clusters)
+    new_centroids = tf.concat([tf.expand_dims(tf.reduce_mean(partition, 0), 0) for partition in partitions], 0)
+    return new_centroids
+
